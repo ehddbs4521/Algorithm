@@ -1,5 +1,15 @@
 import java.util.*;
 
+class Word{
+    String w;
+    int c;
+    
+    Word(String w, int c){
+        this.w=w;
+        this.c=c;
+    }
+}
+
 class Solution {
     
     public int solution(String begin, String target, String[] words) {
@@ -9,21 +19,17 @@ class Solution {
     
     int bfs(String begin, String target, String[] words){
         Queue<Word> que=new LinkedList<>();
-        boolean visited[]=new boolean[words.length];
         que.add(new Word(begin,0));
+        boolean[] visited=new boolean[words.length];
         
         while(!que.isEmpty()){
-            Word w=que.poll();
-            String now_word=w.word;
-            int now_cnt=w.cnt;
-            
-            if(target.equals(now_word)){
-                return now_cnt;
+            Word word=que.poll();
+            if(word.w.equals(target)){
+                return word.c;
             }
-            
             for(int i=0;i<words.length;i++){
-                if(!visited[i] && diff(words[i],now_word)){
-                    que.add(new Word(words[i],now_cnt+1));
+                if(diffOne(word.w,words[i]) && !visited[i]){
+                    que.add(new Word(words[i],word.c+1));
                     visited[i]=true;
                 }
             }
@@ -31,30 +37,19 @@ class Solution {
         return 0;
     }
     
-    boolean diff(String target,String word){
+    boolean diffOne(String v1, String v2){
         
-        int diff_cnt=0;
+        int total=0;
         
-        for(int i=0;i<target.length();i++){
-            if(target.charAt(i)!=word.charAt(i)){
-                diff_cnt++;
+        for(int i=0;i<v1.length();i++){
+            if(v1.charAt(i)!=v2.charAt(i)){
+                total++;
             }
         }
         
-        if(diff_cnt!=1){
-            return false;
+        if(total==1){
+            return true;
         }
-        return true;
-    }
-    
-}
-
-class Word{
-    String word;
-    int cnt;
-    
-    Word(String word, int cnt){
-        this.word=word;
-        this.cnt=cnt;
+        return false;
     }
 }
