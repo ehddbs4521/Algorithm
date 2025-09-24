@@ -6,34 +6,38 @@ class Solution {
     static int[] dy = {1, -1, 0, 0};
     
     public int solution(int[][] maps) {
-        Queue<int[]> que=new LinkedList<>();
-        que.add(new int[]{0,0,1});
+        int n = maps.length;
+        int m = maps[0].length;
         
-        boolean[][] visited=new boolean[maps.length][maps[0].length];
-        visited[0][0]=true;
+        Queue<int[]> que = new LinkedList<>();
+        boolean[][] visited = new boolean[n][m];
         
-        while(!que.isEmpty()){
-            int[] now=que.poll();
-            int nowX=now[0];
-            int nowY=now[1];
-            int nowCount=now[2];
+        que.add(new int[]{0, 0, 1});
+        visited[0][0] = true;
+        
+        while (!que.isEmpty()) {
+            int[] now = que.poll();
+            int now_x = now[0];
+            int now_y = now[1];
+            int steps = now[2];
             
-            if(nowX==maps.length-1 && nowY==maps[0].length-1){
-                return nowCount;
+            if (now_x == n - 1 && now_y == m - 1) {
+                return steps;
             }
-            for(int i=0;i<4;i++){
-                int newX=nowX+dx[i];
-                int newY=nowY+dy[i];
+            
+            for (int i = 0; i < 4; i++) {
+                int new_x = now_x + dx[i];
+                int new_y = now_y + dy[i];
                 
-                if(newX>=0 && newX<maps.length && newY>=0 && newY<maps[0].length){
-                    if(!visited[newX][newY] && maps[newX][newY]==1){
-                        que.add(new int[]{newX,newY,nowCount+1});
-                        visited[newX][newY]=true;
+                if (new_x >= 0 && new_x < n && new_y >= 0 && new_y < m) {
+                    if (maps[new_x][new_y] == 1 && !visited[new_x][new_y]) {
+                        visited[new_x][new_y] = true;
+                        que.add(new int[]{new_x, new_y, steps + 1});
                     }
                 }
             }
         }
+        
         return -1;
     }
-    
 }
